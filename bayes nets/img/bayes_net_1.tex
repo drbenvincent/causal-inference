@@ -1,0 +1,63 @@
+%\documentclass{article}
+\documentclass[border=10pt]{standalone}
+\usepackage{dcolumn}
+\usepackage{booktabs}
+\usepackage{tikz}
+\usetikzlibrary{positioning,shapes,arrows}
+
+\newcolumntype{M}[1]{D{.}{.}{1.#1}}
+
+\begin{document}
+
+\begin{tikzpicture}[
+  node distance=1cm and 0cm,
+  mynode/.style={draw,ellipse,text width=2cm,align=center}
+]
+% NODES ==============================================
+\node[mynode] (smoke) {Smoker};
+\node[mynode,below right=of smoke] (hospital) {Hospital};
+\node[mynode,above right=of hospital] (covid) {COVID};
+% EDGES ==============================================
+\path 
+(smoke) edge[-latex] (hospital) 
+(hospital) edge[latex-] (covid);
+\node[left=0.5cm of smoke]
+{
+\begin{tabular}{M{1}M{1}}
+\toprule
+\multicolumn{2}{c}{Smoker} \\
+\multicolumn{1}{c}{True} & \multicolumn{1}{c}{False} \\
+\cmidrule{1-2}
+0.25 & 0.75 \\
+\bottomrule
+\end{tabular}
+};
+\node[right=0.5cm of covid]
+{
+\begin{tabular}{M{1}M{1}}
+\toprule
+\multicolumn{2}{c}{COVID} \\
+\multicolumn{1}{c}{True} & \multicolumn{1}{c}{False} \\
+\cmidrule{1-2}
+0.1 & 0.9 \\
+\bottomrule
+\end{tabular}
+};
+\node[below=0.5cm of hospital]
+{
+\begin{tabular}{ccM{2}M{2}}
+\toprule
+& & \multicolumn{2}{c}{Hospital} \\
+\multicolumn{2}{l}{Smoker COVID} & \multicolumn{1}{c}{True} & \multicolumn{1}{c}{False} \\
+\cmidrule(r){1-2}\cmidrule(l){3-4}
+True & True & 0.9 & 0.1 \\
+True & False & 0.1 & 0.9 \\
+False & True & 0.9 & 0.1 \\
+False & False & 0.01 & 0.99 \\
+\bottomrule
+\end{tabular}
+};
+
+\end{tikzpicture}
+
+\end{document}
